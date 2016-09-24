@@ -10,8 +10,6 @@ with open('etc/pkgmon.yml', 'r') as f:
     CONFIG = yaml.load(f)
 
 cpan_raw = urllib2.urlopen('http://www.cpan.org/modules/02packages.details.txt.gz')
-with open('b', 'r') as f:
-    cpan_raw = f.readlines()[9:]
 
 packages = {}
 for line in cpan_raw:
