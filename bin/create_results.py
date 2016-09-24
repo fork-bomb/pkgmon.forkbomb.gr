@@ -78,6 +78,7 @@ class Package:
         return upstream_data['owner']
 
     def _get_upstream_version(self, upstream_data):
+        # TODO: implement higher_version
         def get_max_version(versions_list):
             curr_max = versions_list[0]
             for version in versions_list:
@@ -140,16 +141,19 @@ cache_json_files = get_cache_files(CONFIG)
 results = {}
 for project, packages in PACKAGES.iteritems():
     for package in packages:
-        try:
-            if isinstance(package, basestring):
-                pkg_name = package
+        if isinstance(package, basestring):
+            pkg_name = package
+            try:
                 pkg = Package(package, project)
-            else:
-                pkg_name, pkg_data = package.iteritems()[0]
+            except Exception, e:
+                print "%s: %s" % (pkg_name, e)
+        else:
+            pkg_name, pkg_data = package.items()[0]
+            try:
                 pkg = Package(pkg_name, project, pkg_data)
-            results[pkg.rpm_name] = pkg.create_dict_entry()
-        except Exception, e:
-            print "%s %s" % (pkg_name, e)
+            except Exception, e:
+                print "%s: %s" % (pkg_name, e)
+        results[pkg.rpm_name] = pkg.create_dict_entry()
 
 results_json = json.dumps(results, sort_keys=True, indent=4)
 with open('%s/results.json' % CONFIG['cache_dir'], 'w') as f:
