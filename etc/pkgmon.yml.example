@@ -1,0 +1,22 @@
+---
+tmp_dir: 'tmp/'
+cache_dir: 'tmp/cache/'
+cached_services:
+  - 'cpan.org'
+  - 'pypi.python.org'
+  - 'rubygems.org'
+social_vcs:
+  - 'github.com'
+  - 'gitlab.com'
+gitlab_token: 'randomstring'
+products:
+  - 'openSUSE:Factory'
+  - 'openSUSE:Leap:42.1'
+  - 'openSUSE:Leap:42.1:Update'
+packages:
+  'devel:languages:ruby:extensions':
+    - 'rubygem-bundler'
+  'openSUSE:Tools':
+    - 'osc':
+        'service': 'github'
+        'owner': 'openSUSE'
