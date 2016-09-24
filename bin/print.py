@@ -4,9 +4,9 @@ import json
 import yaml
 
 
-def print_selected_results(packages):
-    for project, packages in packages.iteritems():
-        for package in packages:
+def print_selected_results(config_packages):
+    for project in sorted(config_packages):
+        for package in config_packages[project]:
             if isinstance(package, basestring):
                 pkg = package
             else:
@@ -55,5 +55,5 @@ print(RESULT_TMPL.format('', '', '', '', '', '', '', separ='+').replace(' ', '-'
 # TODO: colors
 # TODO: sorting if possible (configurable, via project or package)
 # TODO: argument to select which of those two functions to use
-#print_selected_results(CONFIG['packages'])
-print_all_results()
+print_selected_results(CONFIG['packages'])
+#print_all_results()
