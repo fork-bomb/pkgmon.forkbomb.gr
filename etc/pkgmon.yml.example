@@ -8,7 +8,6 @@ cached_services:
 social_vcs:
   - 'github.com'
   - 'gitlab.com'
-gitlab_token: 'randomstring'
 products:
   - 'openSUSE:Factory'
   - 'openSUSE:Leap:42.1'

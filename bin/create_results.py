@@ -97,13 +97,15 @@ class Package:
         elif self.upstream_service in CONFIG['social_vcs']:
             self.upstream_repo_owner = self._get_upstream_repo_owner(upstream_data)
             if self.upstream_service == 'github.com':
-                raw = urllib2.urlopen('https://api.%s/repos/%s/%s/tags' % (self.upstream_service, self.upstream_repo_owner, self.upstream_name))
+                req = urllib2.Request('https://api.%s/repos/%s/%s/tags' % (self.upstream_service, self.upstream_repo_owner, self.upstream_name))
+                req.add_header('Authorization', 'token %s' % SECRETS['github_token'])
+                raw = urllib2.urlopen(req)
                 return get_github_gitlab_max_version(json.loads(raw.read()))
             elif self.upstream_service == 'gitlab.com':
                 req = urllib2.Request('https://%s/api/v3/projects/%s%%2F%s/repository/tags' % (self.upstream_service, self.upstream_repo_owner, self.upstream_name))
-                req.add_header('PRIVATE-TOKEN', CONFIG['gitlab_token'])
-                up_res = urllib2.urlopen(req)
-                return get_github_gitlab_max_version(json.loads(up_res.read()))
+                req.add_header('PRIVATE-TOKEN', SECRETS['gitlab_token'])
+                raw = urllib2.urlopen(req)
+                return get_github_gitlab_max_version(json.loads(raw.read()))
         else:
             return 'ERROR'
 
@@ -131,6 +133,9 @@ def get_cache_files(CONFIG):
 
 with open('etc/pkgmon.yml', 'r') as f:
     CONFIG = yaml.load(f)
+
+with open('etc/secrets.yml', 'r') as f:
+    SECRETS = yaml.load(f)
 
 PACKAGES = CONFIG['packages']
 ALL_CACHED_SERVICES = CONFIG['cached_services'] #+ CONFIG['cached_listindex_services']
