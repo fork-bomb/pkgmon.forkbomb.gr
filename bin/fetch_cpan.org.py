@@ -11,7 +11,7 @@ import yaml
 with open('etc/pkgmon.yml', 'r') as f:
     CONFIG = yaml.load(f)
 
-#urllib.urlretrieve('http://www.cpan.org/modules/02packages.details.txt.gz', '%s/cpan.txt.gz' % CONFIG['cache_dir'])
+urllib.urlretrieve('http://www.cpan.org/modules/02packages.details.txt.gz', '%s/cpan.txt.gz' % CONFIG['cache_dir'])
 with gzip.open('%s/cpan.txt.gz' % CONFIG['cache_dir'], 'rb') as f:
     cpan_raw = f.read()
 
